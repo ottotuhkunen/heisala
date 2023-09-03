@@ -1,0 +1,135 @@
+#topContainer {
+    background-color: #0a141e;
+}
+
+body {
+    background-color: #203040;
+    color: lightgray;
+}
+
+#actions {
+    color: #111;
+    background: rgb(160,190,220);
+    border-top: solid thin #6080a0;
+    border-left: solid thin #6080a0;
+}
+
+.title {
+    color: #c0d0e0;
+}
+
+#awosTopContainer {
+    background-color: #14202f;
+}
+
+#awosTopMenu {
+    color: #d0d0d0;
+}
+
+#awosTopMenu td, th {
+    border: 0.5px solid gray;
+}
+
+#activeRunway, #utcTime, #ta, #trl, #atisId, #qnh, #td, #qfe {
+    color: #e0e0e0;
+}
+
+#metCond, #cb, #ts {
+    color: #d0d0d0;
+}
+
+#qnhDecimal, #qfe {
+    color: gray;
+}
+
+.st0{display:none;}
+.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#66C3D8;}
+.st2{fill:#6D6A5B;}
+.st3{fill:#845A3A;}
+.st4{fill:#66452E;}
+.st5{fill:#BC845E;}
+.st6{fill:#231B16;}
+.st7{fill-rule:evenodd;clip-rule:evenodd;}
+.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#17332B;}
+.st9{fill:#9E987D;}
+.st10{fill:#757575;}
+.st11{fill:#BCB596;}
+.st12{fill:#BBF9FF;}
+.st13{fill-rule:evenodd;clip-rule:evenodd;fill:#909B72;}
+.st14{fill:#6C7254;}
+.st15{fill-rule:evenodd;clip-rule:evenodd;fill:#484C3B;}
+.st16{fill:#484C3B;}
+.st17{fill:#17332B;}
+.st18{fill:#FFFFFF;}
+.st19{font-family:'Roboto-Regular';}
+.st20{font-size:18px;}
+.st21{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+
+.maxWindHighlight {fill:#af7f22;}
+.variableHighlight {fill:#de8200;}
+.variableTextHighlight {fill:white;}
+.topMenuHighlight {background-color: #af7f22;}
+.noAtisHighlight {background-color: #e66464;}
+
+footer {
+    background-color: #102030;
+}
+
+#compassDiv {
+    background-color: #384554;
+    border: 1px #708090 solid;
+    background-image: url('images/compass.png');
+}
+
+.topNavButton {
+    border: 1px solid #305070;
+    color: white;
+    background-color: rgb(40,50,60);
+}
+
+.topNavActive {
+    background-color: rgb(80,90,100);
+}
+
+.topNavIcon {
+    filter: invert(75%) sepia(35%) saturate(3850%) hue-rotate(172deg) brightness(100%) contrast(100%);
+}
+
+.topNav {
+    background-color: rgb(10,20,30);
+}
+
+.homeIcon {
+    filter: invert(75%) sepia(35%) saturate(3850%) hue-rotate(172deg) brightness(100%) contrast(100%);
+}
+
+#metarsTable {
+    background-color: #203040;
+}
+
+#metarsTable th {
+    border: 1px solid #304050;
+    background-color: #203040;
+}
+
+#metarsTable td {
+    border: 1px solid #304050;
+    background-color: #102030;
+}
+
+.chartbox {
+    background-color: #102030;
+    border: 0.5px solid gray; 
+}
+
+.legend {
+    background-color: rgb(70,80,90);
+}
+
+.legendLabel {
+    color: white;
+}
+
+.tickLabel {
+    color: #c0d0e0;
+}

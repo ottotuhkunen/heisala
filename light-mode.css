@@ -1,0 +1,123 @@
+#topContainer {
+    background: linear-gradient(to bottom,  rgba(145,200,255,1) 0%,rgba(96,171,248,1) 44%,rgba(64,150,238,1) 100%);
+}
+
+body {
+    background-color: #b7d3ee;
+    color: black;
+}
+
+#actions {
+    color: #111;
+    background: rgb(160,190,220);
+    border-top: solid thin #6080a0;
+    border-left: solid thin #6080a0;
+}
+
+.title {
+    color: white;
+}
+
+#awosTopContainer {
+    background-color: #e6f2fe;
+}
+
+.topNav {
+    background: linear-gradient(to bottom,  rgba(64,150,238,1) 0%,rgba(96,171,248,1) 56%,rgba(145,200,255,1) 100%);
+}
+
+#awosTopMenu {
+    color: black;
+    box-shadow: inset 0px 10px 10px -9px rgba(36, 36, 36, 0.8);
+}
+
+#awosTopMenu td, th {
+    border: 0.5px solid gray;
+}
+
+#activeRunway, #utcTime, #ta, #trl, #atisId, #qnh, #td, #qfe {
+    color: black;
+}
+
+#metCond, #cb, #ts {
+    color: black;
+}
+
+#qnhDecimal, #qfe {
+    color: gray;
+}
+
+.st0{display:none;}
+.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#66C3D8;}
+.st2{fill:#6D6A5B;}
+.st3{fill:#845A3A;}
+.st4{fill:#66452E;}
+.st5{fill:#BC845E;}
+.st6{fill:#231B16;}
+.st7{fill-rule:evenodd;clip-rule:evenodd;}
+.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#17332B;}
+.st9{fill:#9E987D;}
+.st10{fill:#757575;}
+.st11{fill:#BCB596;}
+.st12{fill:#BBF9FF;}
+.st13{fill-rule:evenodd;clip-rule:evenodd;fill:#909B72;}
+.st14{fill:#6C7254;}
+.st15{fill-rule:evenodd;clip-rule:evenodd;fill:#484C3B;}
+.st16{fill:#484C3B;}
+.st17{fill:#17332B;}
+.st18{fill:#FFFFFF;}
+.st19{font-family:'Roboto-Regular';}
+.st20{font-size:18px;}
+.st21{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+
+.maxWindHighlight {fill:#f3cd76;}
+.variableHighlight {fill:#d1862f;}
+.variableTextHighlight {fill:black;}
+.topMenuHighlight {background-color: #e3bb73; box-shadow: inset 0px 10px 10px -9px rgba(36, 36, 36, 0.8);}
+.noAtisHighlight {background-color: #e66464;}
+
+footer {
+    background: linear-gradient(to bottom, #76bbff 0%, #60abf8 100%);
+}
+
+#compassDiv {
+    background-color: #d3dee8;
+    border: 0.5px gray solid;
+    background-image: url('images/compass.png');
+}
+
+.footerText { 
+    color: white;
+}
+
+.footerText2 { 
+    color: white;
+}
+
+.topNavButton {
+    border: 1px solid #4682B4;
+    color: white;
+    background-color: #80b0e0;
+}
+
+.topNavActive {
+    background: linear-gradient(to bottom,  rgba(57,128,204,1) 0%,rgba(135,180,229,1) 100%);
+}
+
+#metarsTable {
+    border: 1px solid white;
+}
+
+#metarsTable th {
+    border: 1px solid white;
+    background-color: #e7eeee;
+}
+
+#metarsTable td {
+    border: 1px solid white;
+    background-color: #f0f0f5;
+}
+
+.tickLabel {
+    color: black;
+}
