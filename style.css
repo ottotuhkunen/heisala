@@ -202,30 +202,6 @@ td {
     font-size: 24pt;
 }
 
-
-.st0{display:none;}
-.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#66C3D8;}
-.st2{fill:#6D6A5B;}
-.st3{fill:#845A3A;}
-.st4{fill:#66452E;}
-.st5{fill:#BC845E;}
-.st6{fill:#231B16;}
-.st7{fill-rule:evenodd;clip-rule:evenodd;}
-.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#17332B;}
-.st9{fill:#9E987D;}
-.st10{fill:#757575;}
-.st11{fill:#BCB596;}
-.st12{fill:#BBF9FF;}
-.st13{fill-rule:evenodd;clip-rule:evenodd;fill:#909B72;}
-.st14{fill:#6C7254;}
-.st15{fill-rule:evenodd;clip-rule:evenodd;fill:#484C3B;}
-.st16{fill:#484C3B;}
-.st17{fill:#17332B;}
-.st18{fill:#FFFFFF;}
-.st19{font-family:'Roboto-Regular';}
-.st20{font-size:18px;}
-.st21{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
-
 #awosMainSvg {
     position: absolute;
     bottom: 0;
@@ -394,7 +370,7 @@ footer {
     border: 0.5px solid gray;
     border-radius: 12px;
     margin-top: 40px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(230, 242, 254, 0.9);
 }
 
 #weatherIcon {

@@ -84,30 +84,13 @@
             <!-- Generator: Adobe Illustrator 27.8.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
             <svg id="awosMainSvg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                  viewBox="0 0 1366 777.93" style="enable-background:new 0 0 1366 777.93;" xml:space="preserve">
-            <style type="text/css">
-                .st0{display:none;}
-                .st1{fill-rule:evenodd;clip-rule:evenodd;fill:#66C3D8;}
-                .st2{fill:#6D6A5B;}
-                .st3{fill:#845A3A;}
-                .st4{fill:#66452E;}
-                .st5{fill:#BC845E;}
-                .st6{fill:#231B16;}
-                .st7{fill-rule:evenodd;clip-rule:evenodd;}
-                .st8{fill-rule:evenodd;clip-rule:evenodd;fill:#17332B;}
-                .st9{fill:#9E987D;}
-                .st10{fill:#757575;}
-                .st11{fill:#BCB596;}
-                .st12{fill:#b7d3ee;}
-                .st13{fill-rule:evenodd;clip-rule:evenodd;fill:#909B72;}
-                .st14{fill:#6C7254;}
-                .st15{fill-rule:evenodd;clip-rule:evenodd;fill:#484C3B;}
-                .st16{fill:#484C3B;}
-                .st17{fill:#17332B;}
-                .st18{fill:#FFFFFF;}
-                .st19{font-family:'Roboto-Regular';}
-                .st20{font-size:18px;}
-                .st21{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
-            </style>
+                 <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style="stop-color:black; stop-opacity:1" />
+                      <stop offset="50%" style="stop-color:#203040; stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#FF6347; stop-opacity:1" /> <!-- Changed to a more vibrant sunset color -->
+                    </linearGradient>
+                  </defs>
             <g id="vesi">
                 <polyline class="st1" points="-1.01,780.99 1364.99,829.88 1366,470.19 0,470.41 	"/>
             </g>
@@ -5376,7 +5359,20 @@
 
         <!-- Forecast -->
         <div id="tableDiv"> </div>
-
+        <script>
+            const numberOfStars = 200;
+            for (let i = 0; i < numberOfStars; i++) {
+              const star = document.createElement('div');
+              star.classList.add('star');
+              if (Math.random() > 0.7) {
+                star.classList.add('twinkle');
+              }
+              star.style.left = `${Math.random() * 100}vw`;
+              star.style.top = `${Math.random() * 100}vh`;
+              star.style.animationDelay = `${Math.random() * 1.5}s`;
+              document.body.appendChild(star);
+            }
+          </script>
     </body>
     <footer>
         <p class="footerText">Mökki, N60.179517 E22.225125 - FMI</p>
