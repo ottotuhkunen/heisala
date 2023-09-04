@@ -55,7 +55,7 @@ body {
 .st5{fill:#BC845E;}
 .st6{fill:#231B16;}
 .st7{fill-rule:evenodd;clip-rule:evenodd;}
-.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#17332B;}
+.st8{fill-rule:evenodd;clip-rule:evenodd;fill:#2c2c2c;}
 .st9{fill:#9E987D;}
 .st10{fill:#757575;}
 .st11{fill:#BCB596;}
@@ -120,4 +120,46 @@ footer {
 
 .tickLabel {
     color: black;
+}
+
+/* weather forecast table */
+
+.weatherTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 60px;
+}
+
+.weatherTable-head th {
+    background-color: #f2f2f2;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.weatherTable-row {
+    text-align: center;
+}
+
+.weatherTable-row:nth-child(odd) {
+    background-color: #f7f7f7;
+}
+
+.weatherTable-row:hover {
+    background-color: #e6e6e6;
+}
+
+.weatherTable-body td {
+    width: 20%;  /* Divides the table width evenly among 5 columns */
+    padding: 4px;
+    border-bottom: 1px solid #ccc;
+    text-align: center;  /* Optional: to center the content */
+}
+
+.weatherTable-body tr:first-child td {
+    border-bottom: 2px solid #60abf8;  /* Thicker, blue bottom border for the first row */
 }

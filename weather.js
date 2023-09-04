@@ -200,7 +200,7 @@ function setCloudCoverage(coverage) {
 function setCurrentWx(wawa) {
     const currentWx = document.getElementById("weatherDesc2");
     const cloudIconField = document.getElementById("weatherIcon");
-    if (wawa == 0) currentWx.textContent = "Ei sääilmiöitä";
+    if (wawa == 0) currentWx.textContent = "";
 
     else if (wawa == 4) currentWx.textContent = "auerta";
     else if (wawa == 5) currentWx.textContent = "auerta";

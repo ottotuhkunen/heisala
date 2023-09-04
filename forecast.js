@@ -68,7 +68,7 @@ function setForecast(xmlDoc) {
             weatherData[date][hour].precipitation = parseFloat(parameterValue * 10);
             if (parameterValue >= 0.0 && parameterValue <= 0.6) weatherIconHelper = 4;
             else if (parameterValue > 0.6 && parameterValue <= 0.15) weatherIconHelper = 5;
-            else if (parameterValue > 15) weatherIconHelper = 6;
+            else if (parameterValue > 0.15) weatherIconHelper = 6;
         }
 
         else if (parameterName === "WindSpeedMS") {
@@ -90,6 +90,10 @@ function setForecast(xmlDoc) {
     const table = document.createElement("table");
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
+
+    table.className = "weatherTable";
+    thead.className = "weatherTable-head";
+    headerRow.className = "weatherTable-row";
     
     for (const date in weatherData) {
         const th = document.createElement("th");
@@ -104,6 +108,7 @@ function setForecast(xmlDoc) {
 
     // Add empty body
     const tbody = document.createElement("tbody");
+    tbody.className = "weatherTable-body";
     table.appendChild(tbody);
 
     // Add table to DOM
