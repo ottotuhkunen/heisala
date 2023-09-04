@@ -162,7 +162,7 @@ footer {
 }
 
 .weatherTable-body td {
-    width: 20%;  /* Divides the table width evenly among 5 columns */
+    width: 20%; 
     padding: px;
     border-bottom: 0.5px solid #4682B4;
     text-align: center;  /* Optional: to center the content */

@@ -1,6 +1,6 @@
 async function loadForecast() {
     try {
-      const response = await fetch('https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::forecast::harmonie::surface::point::simple&place=heisala');
+      const response = await fetch('https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=fmi::forecast::edited::weather::scandinavia::point::simple&place=heisala');
   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -15,91 +15,129 @@ async function loadForecast() {
     }
 }
 
-function setForecast(xmlDoc) {
-    // Data storage
-    const weatherData = {};
+let weatherArray;
 
+function loadWeatherIcons(endTime, startTime, callback) {
+    
+    const startTimeDate = new Date(startTime);
+    startTime = startTimeDate.toISOString();
+
+    const endTimeDate = new Date(endTime);
+    endTime = endTimeDate.toISOString();
+
+    const apiUrl = `https://opendata.fmi.fi/timeseries?place=heisala&param=smartsymbol,smartsymboltext&lang=en&startTime=${startTime}&endTime=${endTime}`;
+    console.log(apiUrl);
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(responseData => {
+            const weatherArray = responseData.split("\n"); // Assuming the text is separated by new lines
+            if (callback) {
+                callback(weatherArray); // Passing weatherArray to the callback function
+            }
+        })
+        .catch(error => {
+            console.log('Fetch API error -', error);
+        });
+}
+
+
+
+
+// Data storage
+const weatherData = {};
+
+function setForecast(xmlDoc) {
     // Parse XML
     const xmlElements = xmlDoc.getElementsByTagName("wfs:member");
+    const lastIndex = xmlElements.length - 1;
+    let endTime = xmlElements[lastIndex].getElementsByTagName("BsWfs:Time")[0];
+    endTime = new Date(endTime.textContent);
 
-    let windSpeeds;
-    let weatherIconHelper;
-    let visibility;
+    let startTime = xmlElements[0].getElementsByTagName("BsWfs:Time")[0];
+    startTime = new Date(startTime.textContent);
 
-    // 0 = clear (fa-solid fa-sun)
-    // 1 = few clouds (fa-cloud-sun)
-    // 2 = cloudy (fa-cloud)
-    // 3 = fog (fa-smog)
-    // 4 = light rain (fa-cloud-sun-rain)
-    // 5 = rain (fa-cloud-rain)
-    // 6 = heavy rain (fa-cloud-showers-heavy)
-    // 7 = ice rain (fa-cloud-meatball)
-    // 8 = snow (fa-snowflake")
+    /*
+    1 selkeää
+    2 puolipilvistä
+    21 heikkoja sadekuuroja
+    22 sadekuuroja
+    23 voimakkaita sadekuuroja
+    3 pilvistä
+    31 heikkoa vesisadetta
+    32 vesisadetta
+    33 voimakasta vesisadetta
+    41 heikkoja lumikuuroja
+    42 lumikuuroja
+    43 voimakkaita lumikuuroja
+    51 heikkoa lumisadetta
+    52 lumisadetta
+    53 voimakasta lumisadetta
+    61 ukkoskuuroja
+    62 voimakkaita ukkoskuuroja
+    63 ukkosta
+    64 voimakasta ukkosta
+    71 heikkoja räntäkuuroja
+    72 räntäkuuroja
+    73 voimakkaita räntäkuuroja
+    81 heikkoa räntäsadetta
+    82 räntäsadetta
+    83 voimakasta räntäsadetta
+    91 utua
+    92 sumua
+    */
 
-    for (let i = 0; i < xmlElements.length; i++) {
-        const parameterName = xmlElements[i].getElementsByTagName("BsWfs:ParameterName")[0].textContent;
-        const parameterValue = xmlElements[i].getElementsByTagName("BsWfs:ParameterValue")[0].textContent;
-        
-        // Original time in UTC
-        const time = new Date(xmlElements[i].getElementsByTagName("BsWfs:Time")[0].textContent);
-        time.setUTCHours(time.getUTCHours() + 3); // Add 3 hours to make it Finland's time
-        const date = time.toISOString().split("T")[0];
-        const hour = time.getUTCHours();
+    loadWeatherIcons(endTime, startTime, function(weatherArray) {
 
-        if (!weatherData[date]) {
-            weatherData[date] = {};
-        }
-        
-        if (!weatherData[date][hour]) {
-            weatherData[date][hour] = {};
-        }
+        console.log(weatherArray[65]);
+        let weatherArrayIndex = 0;
 
-        if (parameterName === "Temperature") {
-            weatherData[date][hour].temperature = Math.round(parameterValue) + "°";
-        } 
+        for (let i = 0; i < xmlElements.length; i++) {
+            const parameterName = xmlElements[i].getElementsByTagName("BsWfs:ParameterName")[0].textContent;
+            const parameterValue = xmlElements[i].getElementsByTagName("BsWfs:ParameterValue")[0].textContent;
+            
+            // Original time in UTC
+            const time = new Date(xmlElements[i].getElementsByTagName("BsWfs:Time")[0].textContent);
+            time.setUTCHours(time.getUTCHours() + 3); // Add 3 hours to make it Finland's time
+            const date = time.toISOString().split("T")[0];
+            const hour = time.getUTCHours();
 
-        if (parameterName === "TotalCloudCover") {
-            weatherData[date][hour].cloudcover = Math.round(parameterValue);
-            if (parameterValue >= 0 && parameterValue <= 20) weatherIconHelper = 0;
-            else if (parameterValue > 20 && parameterValue <= 60) weatherIconHelper = 1;
-            else if (parameterValue > 60 && parameterValue <= 100) weatherIconHelper = 2;
-        } 
-        
-        else if (parameterName === "PrecipitationAmount") {
-            weatherData[date][hour].precipitation = parseFloat(parameterValue * 10);
-            if (parameterValue >= 0.0 && parameterValue <= 0.6) weatherIconHelper = 4;
-            else if (parameterValue > 0.6 && parameterValue <= 0.15) weatherIconHelper = 5;
-            else if (parameterValue > 0.15) weatherIconHelper = 6;
-        }
-
-        else if (parameterName === "WindSpeedMS") {
-            windSpeeds = Math.round(parameterValue);
-            //weatherData[date][hour].windspeed = Math.round(parameterValue);
-        }
-        else if (parameterName === "WindGust") {
-            // windSpeeds = windSpeeds + "-" + Math.ceil(parameterValue);
-            //weatherData[date][hour].windspeed = Math.round(parameterValue);
-        }
-
-        else if (parameterName === "Visibility") {
-            if (parameterValue > 20000) visibility = "yli 20 km";
-            else if (parameterValue > 4000 && parameterValue <= 20000) {
-                visibility = Math.round(parameterValue / 1000) * 1000;
-                visibility = Math.round(parameterValue / 1000) + " km";
+            if (!weatherData[date]) {
+                weatherData[date] = {};
             }
-            else if (parameterValue <= 4000) {
-                visibility = Math.round(parameterValue / 100) * 100;
-                visibility = parameterValue + " m"
+            
+            if (!weatherData[date][hour]) {
+                weatherData[date][hour] = {};
             }
-            else visibility = Math.ceil(parameterValue) + " m";
 
-            weatherData[date][hour].visibility = visibility;
+            if (parameterName === "Temperature") {
+                weatherData[date][hour].temperature = Math.round(parameterValue) + "°";
+
+                // weather symbol
+                weatherData[date][hour].weathersymbol = weatherArray[weatherArrayIndex] || 0;
+                weatherArrayIndex ++;
+            } 
+            
+            else if (parameterName === "Precipitation1h") {
+                weatherData[date][hour].precipitation = parseFloat(parameterValue * 10);
+            }
+
+            else if (parameterName === "WindSpeedMS") {
+                weatherData[date][hour].windspeed = Math.round(parameterValue);
+                //weatherData[date][hour].windspeed = Math.round(parameterValue);
+            }
+            else if (parameterName === "WindGust") {
+                // windSpeeds = windSpeeds + "-" + Math.ceil(parameterValue);
+                //weatherData[date][hour].windspeed = Math.round(parameterValue);
+            }
         }
+    });
 
-        weatherData[date][hour].windspeed = windSpeeds;
-        weatherData[date][hour].weathericonId = weatherIconHelper;
 
-    }
 
     // Create table and headers
     const table = document.createElement("table");
@@ -158,7 +196,6 @@ function setForecast(xmlDoc) {
     if (firstDate) {
         updateTableBody(firstDate, weatherData);
     }
-
 }
 
 function updateTableBody(date, weatherData) {
@@ -178,8 +215,9 @@ function updateTableBody(date, weatherData) {
     iconRow.appendChild(clockIconCell);
 
     const wxIconCell = document.createElement("td");
-    const wxIcon = document.createElement("i");
-    wxIcon.className = "fa-solid fa-snowflake";
+    const wxIcon = document.createElement("img");
+    wxIcon.src = "images/weatherIcons/light/1.svg";
+    wxIcon.width = 30;
     wxIconCell.appendChild(wxIcon);
     iconRow.appendChild(wxIconCell);
 
@@ -207,12 +245,6 @@ function updateTableBody(date, weatherData) {
     precipIconCell.appendChild(mmText);
     iconRow.appendChild(precipIconCell);
 
-    const visIconCell = document.createElement("td");
-    const visIcon = document.createElement("i");
-    visIcon.className = "fa-solid fa-eye";
-    visIconCell.appendChild(visIcon);
-    iconRow.appendChild(visIconCell);
-
     tbody.appendChild(iconRow);
 
     for (const hour in weatherData[date]) {
@@ -221,12 +253,13 @@ function updateTableBody(date, weatherData) {
     
         // Time cell
         const hourCell = document.createElement("td");
-        hourCell.innerText = "klo " + hour;
+        hourCell.innerText = hour;
 
         // Icon cell
         const iconCell = document.createElement("td");
-        const icon = document.createElement("i");
-        icon.className = getWeatherIconClass(data.weathericonId, hour);
+        const icon = document.createElement("img");
+        icon.src = getWeatherIconSrc(data.weathersymbol);
+        icon.width = 30;
         iconCell.appendChild(icon);
     
         // Temperature cell
@@ -242,47 +275,19 @@ function updateTableBody(date, weatherData) {
         const windspeedCell = document.createElement("td");
         windspeedCell.innerText = data.windspeed;
 
-        // Windspeed cell
-        const visibilityCell = document.createElement("td");
-        visibilityCell.innerText = data.visibility;
-
         row.appendChild(hourCell);
         row.appendChild(iconCell);
         row.appendChild(tempCell);
         row.appendChild(windspeedCell);
         row.appendChild(precipCell);
-        row.appendChild(visibilityCell);
 
         tbody.appendChild(row);
     }
 }
 
-function getWeatherIconClass(weathericonId, hour) {
-
-    const hourInt = parseInt(hour, 10);
-    const isNight = (hourInt >= 20 && hourInt < 24) || (hourInt >= 0 && hourInt < 7);
-
-    switch (weathericonId) {
-        case 0:
-            return isNight ? 'fa-solid fa-solid fa-moon' : 'fa-solid fa-solid fa-sun';
-        case 1:
-            return isNight ? 'fa-solid fa-cloud-moon' : 'fa-solid fa-cloud-sun';
-        case 2:
-            return 'fa-solid fa-cloud';
-        case 3:
-            return 'fa-solid fa-smog';
-        case 4:
-            return isNight ? 'fa-solid fa-cloud-moon-rain' : 'fa-solid fa-cloud-sun-rain';
-        case 5:
-            return 'fa-solid fa-cloud-rain';
-        case 6:
-            return 'fa-solid fa-cloud-showers-heavy';
-        case 7:
-            return 'fa-solid fa-cloud-meatball';
-        case 8:
-            return 'fa-solid fa-snowflake';
-        default:
-            return '';
-    }
+function getWeatherIconSrc(symbolId) {
+    symbolId = symbolId.split(" ");
+    symbolId = parseInt(symbolId[0], 10); 
+    return `images/weatherIcons/light/${symbolId}.svg`;
 }
 
