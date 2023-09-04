@@ -127,18 +127,26 @@ footer {
 .weatherTable {
     width: 100%;
     border-collapse: collapse;
-    background-color: #ffffff;
+    background-color: #b7d3ee;
     font-family: Arial, sans-serif;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 60px;
 }
 
 .weatherTable-head th {
-    background-color: #f2f2f2;
     text-align: center;
     padding: 10px;
-    border-bottom: 1px solid #ccc;
     cursor: pointer;
+    border: 1px solid #4682B4;
+    color: white;
+    background-color: #80b0e0;
+    font-size: 10pt;
+    text-shadow: -1px -1px 5px rgba(40,40,40,0.6);
+    font-weight: 400;
+}
+
+.weatherTable-head th.clicked {
+    background: linear-gradient(to bottom, rgba(57,128,204,1) 0%,rgba(135,180,229,1) 100%);
 }
 
 .weatherTable-row {
@@ -155,8 +163,8 @@ footer {
 
 .weatherTable-body td {
     width: 20%;  /* Divides the table width evenly among 5 columns */
-    padding: 4px;
-    border-bottom: 1px solid #ccc;
+    padding: px;
+    border-bottom: 0.5px solid #4682B4;
     text-align: center;  /* Optional: to center the content */
 }
 

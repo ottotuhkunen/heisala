@@ -24,6 +24,7 @@ function setForecast(xmlDoc) {
 
     let windSpeeds;
     let weatherIconHelper;
+    let visibility;
 
     // 0 = clear (fa-solid fa-sun)
     // 1 = few clouds (fa-cloud-sun)
@@ -54,7 +55,7 @@ function setForecast(xmlDoc) {
         }
 
         if (parameterName === "Temperature") {
-            weatherData[date][hour].temperature = Math.round(parameterValue);
+            weatherData[date][hour].temperature = Math.round(parameterValue) + "°";
         } 
 
         if (parameterName === "TotalCloudCover") {
@@ -73,12 +74,26 @@ function setForecast(xmlDoc) {
 
         else if (parameterName === "WindSpeedMS") {
             windSpeeds = Math.round(parameterValue);
-            console.log(windSpeeds)
             //weatherData[date][hour].windspeed = Math.round(parameterValue);
         }
         else if (parameterName === "WindGust") {
-            windSpeeds = windSpeeds + "-" + Math.ceil(parameterValue);
+            // windSpeeds = windSpeeds + "-" + Math.ceil(parameterValue);
             //weatherData[date][hour].windspeed = Math.round(parameterValue);
+        }
+
+        else if (parameterName === "Visibility") {
+            if (parameterValue > 20000) visibility = "yli 20 km";
+            else if (parameterValue > 4000 && parameterValue <= 20000) {
+                visibility = Math.round(parameterValue / 1000) * 1000;
+                visibility = Math.round(parameterValue / 1000) + " km";
+            }
+            else if (parameterValue <= 4000) {
+                visibility = Math.round(parameterValue / 100) * 100;
+                visibility = parameterValue + " m"
+            }
+            else visibility = Math.ceil(parameterValue) + " m";
+
+            weatherData[date][hour].visibility = visibility;
         }
 
         weatherData[date][hour].windspeed = windSpeeds;
@@ -95,13 +110,35 @@ function setForecast(xmlDoc) {
     thead.className = "weatherTable-head";
     headerRow.className = "weatherTable-row";
     
-    for (const date in weatherData) {
+    function resetClicked() {
+        const thElements = document.querySelectorAll(".weatherTable-head th");
+        thElements.forEach((th) => {
+            th.classList.remove("clicked");
+        });
+    }
+
+    // Define header texts
+    const headerTexts = ['Tänään', 'Huomenna', 'Ylihuomenna'];
+    
+    for (let i = 0; i < headerTexts.length; i++) {
         const th = document.createElement("th");
-        th.innerHTML = date;
-        th.onclick = function() {
-            updateTableBody(date, weatherData);
-        };
+        th.innerHTML = headerTexts[i];
+        
+        // Assuming you have the corresponding dates in weatherData
+        const date = Object.keys(weatherData)[i];
+        if (date) {
+            th.onclick = function() {
+                resetClicked();  // Reset the clicked state on all th elements
+                this.classList.add("clicked");  // Add the clicked class to the clicked th
+                updateTableBody(date, weatherData);
+            };
+        }
         headerRow.appendChild(th);
+
+        // Highlight the first <th> element by default
+        if (i === 0) {
+            th.classList.add("clicked");
+        }
     }
     thead.appendChild(headerRow);
     table.appendChild(thead);
@@ -121,6 +158,7 @@ function setForecast(xmlDoc) {
     if (firstDate) {
         updateTableBody(firstDate, weatherData);
     }
+
 }
 
 function updateTableBody(date, weatherData) {
@@ -169,6 +207,11 @@ function updateTableBody(date, weatherData) {
     precipIconCell.appendChild(mmText);
     iconRow.appendChild(precipIconCell);
 
+    const visIconCell = document.createElement("td");
+    const visIcon = document.createElement("i");
+    visIcon.className = "fa-solid fa-eye";
+    visIconCell.appendChild(visIcon);
+    iconRow.appendChild(visIconCell);
 
     tbody.appendChild(iconRow);
 
@@ -178,12 +221,12 @@ function updateTableBody(date, weatherData) {
     
         // Time cell
         const hourCell = document.createElement("td");
-        hourCell.innerText = hour; // Using hour directly from the loop variable
+        hourCell.innerText = "klo " + hour;
 
         // Icon cell
         const iconCell = document.createElement("td");
         const icon = document.createElement("i");
-        icon.className = getWeatherIconClass(data.weathericonId);
+        icon.className = getWeatherIconClass(data.weathericonId, hour);
         iconCell.appendChild(icon);
     
         // Temperature cell
@@ -192,34 +235,44 @@ function updateTableBody(date, weatherData) {
     
         // Precipitation cell
         const precipCell = document.createElement("td");
+        if (data.precipitation == 0) data.precipitation = "";
         precipCell.innerText = data.precipitation;
 
         // Windspeed cell
         const windspeedCell = document.createElement("td");
         windspeedCell.innerText = data.windspeed;
 
+        // Windspeed cell
+        const visibilityCell = document.createElement("td");
+        visibilityCell.innerText = data.visibility;
+
         row.appendChild(hourCell);
         row.appendChild(iconCell);
         row.appendChild(tempCell);
         row.appendChild(windspeedCell);
         row.appendChild(precipCell);
+        row.appendChild(visibilityCell);
 
         tbody.appendChild(row);
     }
 }
 
-function getWeatherIconClass(weathericonId) {
+function getWeatherIconClass(weathericonId, hour) {
+
+    const hourInt = parseInt(hour, 10);
+    const isNight = (hourInt >= 20 && hourInt < 24) || (hourInt >= 0 && hourInt < 7);
+
     switch (weathericonId) {
         case 0:
-            return 'fa-solid fa-solid fa-sun';
+            return isNight ? 'fa-solid fa-solid fa-moon' : 'fa-solid fa-solid fa-sun';
         case 1:
-            return 'fa-solid fa-cloud-sun';
+            return isNight ? 'fa-solid fa-cloud-moon' : 'fa-solid fa-cloud-sun';
         case 2:
             return 'fa-solid fa-cloud';
         case 3:
             return 'fa-solid fa-smog';
         case 4:
-            return 'fa-solid fa-cloud-sun-rain';
+            return isNight ? 'fa-solid fa-cloud-moon-rain' : 'fa-solid fa-cloud-sun-rain';
         case 5:
             return 'fa-solid fa-cloud-rain';
         case 6:
@@ -232,3 +285,4 @@ function getWeatherIconClass(weathericonId) {
             return '';
     }
 }
+

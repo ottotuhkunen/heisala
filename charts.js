@@ -3,6 +3,7 @@ let chartUpdateInterval;
 function normalView() {
     document.getElementById("mainContainer").style.display = "block";
     document.getElementById("chartsContainer").style.display = "none";
+    document.getElementById("tableDiv").style.display = "none";
 
     // buttons
     document.getElementById("airfieldViewButton").classList.add("topNavActive");
@@ -16,6 +17,7 @@ function normalView() {
 function chartDisplay() {
     document.getElementById("mainContainer").style.display = "none";
     document.getElementById("chartsContainer").style.display = "flex";
+    document.getElementById("tableDiv").style.display = "none";
 
     // buttons
     document.getElementById("airfieldViewButton").classList.remove("topNavActive");
@@ -36,6 +38,7 @@ function forecastDisplay() {
     document.getElementById("mainContainer").style.display = "none";
     document.getElementById("chartsContainer").style.display = "none";
     document.getElementById("forecastButton").classList.add("topNavActive");
+    document.getElementById("tableDiv").style.display = "block";
 
     // buttons
     document.getElementById("airfieldViewButton").classList.remove("topNavActive");

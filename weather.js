@@ -157,44 +157,38 @@ function setData(xmlDoc) {
 function setCloudCoverage(coverage) {
     const coverageField = document.getElementById("weatherDesc");
     const cloudIconField = document.getElementById("weatherIcon");
+
+    // Get current hour
+    const date = new Date();
+    const currentHour = date.getHours();
+    const isNight = (currentHour >= 20 && currentHour < 24) || (currentHour >= 0 && currentHour < 7);
+
     if (coverage == 0) {
         coverageField.textContent = "Selkeää";
-        cloudIconField.className = ("fa-solid fa-sun");
+        cloudIconField.className = isNight ? "fa-solid fa-moon" : "fa-solid fa-sun";
     } 
-    else if (coverage == 1) {
-        coverageField.textContent = "Melkein selkeää";
-        cloudIconField.className = ("fa-solid fa-sun");
-    } 
-    else if (coverage == 2) {
-        coverageField.textContent = "Verrattain selkeää";
-        cloudIconField.className = ("fa-solid fa-cloud-sun");
-    } 
-    else if (coverage == 3) {
-        coverageField.textContent = "Hajanaisia pilviä (3/8)";
-        cloudIconField.className = ("fa-solid fa-cloud-sun");
-    } 
-    else if (coverage == 4) {
-        coverageField.textContent = "Hajanaisia pilviä (4/8)";
-        cloudIconField.className = ("fa-solid fa-cloud-sun");
-    } 
-    else if (coverage == 5) {
-        coverageField.textContent = "Puolipilvistä (5/8)";
-        cloudIconField.className = ("fa-solid fa-cloud-sun");
-    } 
-    else if (coverage == 6) {
-        coverageField.textContent = "Verrattain pilvistä (6/8)";
-        cloudIconField.className = ("fa-solid fa-cloud");
-    } 
+    else if (coverage >= 1 && coverage <= 4) {
+        coverageField.textContent = ["Melkein selkeää", "Verrattain selkeää", "Hajanaisia pilviä (3/8)", "Hajanaisia pilviä (4/8)"][coverage - 1];
+        cloudIconField.className = isNight ? "fa-solid fa-cloud-moon" : "fa-solid fa-cloud-sun";
+    }
+    else if (coverage >= 5 && coverage <= 6) {
+        coverageField.textContent = ["Puolipilvistä (5/8)", "Verrattain pilvistä (6/8)"][coverage - 5];
+        cloudIconField.className = "fa-solid fa-cloud";
+    }
     else if (coverage == 7) {
         coverageField.textContent = "Melkein pilvistä (7/8)";
-        cloudIconField.className = ("fa-solid fa-cloud");
+        cloudIconField.className = "fa-solid fa-cloud";
     }
     else if (coverage == 8) {
         coverageField.textContent = "Pilvistä (8/8)";
-        cloudIconField.className = ("fa-solid fa-cloud");
+        cloudIconField.className = "fa-solid fa-cloud";
     }
-    else if (coverage == 9) coverageField.textContent = "Sumua (9/8)";
+    else if (coverage == 9) {
+        coverageField.textContent = "Sumua (9/8)";
+        // Choose an appropriate icon for fog if you wish
+    }
 }
+
 
 // display weather codes
 function setCurrentWx(wawa) {
