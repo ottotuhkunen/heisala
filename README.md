@@ -2,4 +2,4 @@
 
 - Weather display designed for custom location made by Otto Tuhkunen
 
-<img src="./images/screenshot.png" alt="plot">
+<img src="./screenshot.png" alt="plot">
